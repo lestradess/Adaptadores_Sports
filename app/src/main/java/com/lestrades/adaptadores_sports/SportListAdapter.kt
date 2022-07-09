@@ -30,7 +30,11 @@ class SportListAdapter(private val listerner: OnClickListener):
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val sport = getItem(position)
         with(holder as ViewHolder){
+
+            setListener(sport)
+
             binding.tvName.text = sport.name
+
             Glide.with(context)
                 .asBitmap()
                 .load(sport.imgUrl)
@@ -46,6 +50,16 @@ class SportListAdapter(private val listerner: OnClickListener):
                         binding.imgPhoto.setImageBitmap(resource)
                     }
 
+                    override fun onLoadStarted(placeholder: Drawable?) {
+                        super.onLoadStarted(placeholder)
+                        binding.imgPhoto.setImageResource(R.drawable.ic_access_time)
+                    }
+
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        super.onLoadFailed(errorDrawable)
+                        binding.progressBar.visibility= View.GONE
+                        binding.imgPhoto.setImageResource(R.drawable.ic_error)
+                    }
                     override fun onLoadCleared(placeholder: Drawable?) {
                         TODO("Not yet implemented")
                     }
@@ -55,6 +69,9 @@ class SportListAdapter(private val listerner: OnClickListener):
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val binding = ItemSportBinding.bind(view)
+        fun setListener(sport: Sport){
+            binding.root.setOnClickListener {listerner.Onclick(sport)}
+        }
     }
 
     class SportDiffCallback: DiffUtil.ItemCallback<Sport>(){

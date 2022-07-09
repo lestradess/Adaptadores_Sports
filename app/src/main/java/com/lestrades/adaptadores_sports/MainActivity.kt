@@ -3,6 +3,7 @@ package com.lestrades.adaptadores_sports
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.lestrades.adaptadores_sports.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), OnClickListener {
@@ -48,6 +49,6 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun Onclick(sport: Sport) {
-        TODO("Not yet implemented")
+        Snackbar.make(binding.root,sport.name,Snackbar.LENGTH_SHORT).show()
     }
 }
