@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var listAdapter: SportListAdapter
+    private lateinit var adapter: SportAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +23,14 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     private fun setupRecyclerView() {
         listAdapter = SportListAdapter(this)
+        adapter = SportAdapter(this)
+
         binding.recyclerView.apply {
             //Las vistas dentro del recycler van a tener el mismo tamaño siempre
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = listAdapter
+            //adapter = listAdapter
+            adapter = this@MainActivity.adapter
         }
     }
 
@@ -45,7 +49,10 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
     private fun getAllSports(){
         val sportData = sports()
-        listAdapter.submitList(sportData)
+        //listAdapter.submitList(sportData)
+        sportData.forEach{
+            adapter.add(it)
+        }
     }
 
     override fun Onclick(sport: Sport) {
