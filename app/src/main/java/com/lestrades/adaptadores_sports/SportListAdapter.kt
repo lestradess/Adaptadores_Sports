@@ -1,13 +1,19 @@
 package com.lestrades.adaptadores_sports
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.lestrades.adaptadores_sports.databinding.ItemSportBinding
 
 class SportListAdapter(private val listerner: OnClickListener):
@@ -26,8 +32,24 @@ class SportListAdapter(private val listerner: OnClickListener):
         with(holder as ViewHolder){
             binding.tvName.text = sport.name
             Glide.with(context)
+                .asBitmap()
                 .load(sport.imgUrl)
-                .into(binding.imgPhoto)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(object :CustomTarget<Bitmap>(1280,720){
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        binding.progressBar.visibility= View.GONE
+                        binding.imgPhoto.scaleType = ImageView.ScaleType.CENTER_CROP
+                        binding.imgPhoto.setImageBitmap(resource)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        TODO("Not yet implemented")
+                    }
+                })
         }
     }
 
